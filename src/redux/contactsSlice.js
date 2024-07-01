@@ -1,72 +1,75 @@
-import { createSlice, isAnyOf } from "@reduxjs/toolkit";
-import { addContactThunk, deleteThunk, fetchDataThunk } from "./operations";
+import { createSelector, createSlice, isAnyOf } from "@reduxjs/toolkit";
+import { addContact, deleteContact, fetchContacts } from "./contactsOps";
+import { selectNameFilter } from "./filtersSlice";
 
 const initialState = {
   items: [],
-  isLoading: false,
-  isError: false,
+  loading: false,
+  error: null,
 };
 
 const slice = createSlice({
   name: "contacts",
   initialState,
-  // selectors: {
-  //   selectContacts: (state) => state.contacts.items,
-  //   selectIsLoading: (state) => state.isLoading,
-  //   selectIsError: (state) => state.isError,
-  // },
-
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDataThunk.fulfilled, (state, action) => {
+      .addCase(fetchContacts.fulfilled, (state, action) => {
         state.items = action.payload;
       })
 
-      .addCase(addContactThunk.fulfilled, (state, action) => {
+      .addCase(addContact.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
 
-      .addCase(deleteThunk.fulfilled, (state, action) => {
+      .addCase(deleteContact.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.id !== action.payload);
       })
 
       .addMatcher(
         isAnyOf(
-          fetchDataThunk.fulfilled,
-          addContactThunk.fulfilled,
-          deleteThunk.fulfilled
+          fetchContacts.fulfilled,
+          addContact.fulfilled,
+          deleteContact.fulfilled
         ),
         (state, action) => {
-          state.isLoading = false;
+          state.loading = false;
         }
       )
       .addMatcher(
         isAnyOf(
-          fetchDataThunk.pending,
-          addContactThunk.pending,
-          deleteThunk.pending
+          fetchContacts.pending,
+          addContact.pending,
+          deleteContact.pending
         ),
         (state, action) => {
-          state.isLoading = true;
+          state.loading = true;
         }
       )
       .addMatcher(
         isAnyOf(
-          fetchDataThunk.rejected,
-          addContactThunk.rejected,
-          deleteThunk.rejected
+          fetchContacts.rejected,
+          addContact.rejected,
+          deleteContact.rejected
         ),
         (state, action) => {
-          state.isError = action.payload;
-          state.isLoading = false;
+          state.error = action.payload;
+          state.loading = false;
         }
       );
   },
 });
 
 export const contactsReducer = slice.reducer;
-// export const { selectContacts, selectIsError, selectIsLoading } =
-//   slice.selectors;
+
 export const selectContacts = (state) => state.contacts.items;
-export const selectIsLoading = (state) => state.contacts.isLoading;
-export const selectIsError = (state) => state.contacts.isError;
+export const selectIsLoading = (state) => state.contacts.loading;
+export const selectIsError = (state) => state.contacts.error;
+
+export const selectFilteredContacts = createSelector(
+  [selectContacts, selectNameFilter],
+  (contacts, filter) => {
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  }
+);

@@ -1,3 +1,4 @@
+import { TbSquareX } from "react-icons/tb";
 import s from "./Contact.module.css";
 import { FaUser, FaPhone } from "react-icons/fa";
 
@@ -13,7 +14,7 @@ export const Contact = ({ item, onDelete }) => {
         {item.number}
       </p>
       <button onClick={onDelete} className={s.btn}>
-        Delete
+        <TbSquareX color="#750b0b" />
       </button>
     </li>
   );

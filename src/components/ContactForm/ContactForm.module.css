@@ -7,6 +7,15 @@
   justify-content: center;
   margin-bottom: 30px;
   margin-top: 30px;
+
+  background: #e0e0e0;
+  box-shadow: inset -20px -20px 60px #bebebe, inset 20px 20px 60px #ffffff;
+  background: rgba(255, 255, 255, 0.52);
+  border-radius: 6px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: relative;
 }
 .form {
   display: flex;
@@ -18,14 +27,23 @@
 }
 .error {
   color: tomato;
-  left: 5%;
-  top: 25%;
+  left: 57%;
+  top: 29%;
+  position: absolute;
 }
+
 .btn {
   border: 1px solid black;
   width: 100px;
   margin: 0 auto;
+  border-radius: 10px;
+  padding: 5px;
+
   &:hover {
-    background-color: rgb(182, 133, 228);
+    background-color: rgb(133, 228, 184);
   }
+}
+.title {
+  position: absolute;
+  top: 20px;
 }

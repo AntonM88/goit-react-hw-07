@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import s from "./ContactForm.module.css";
-import { addContactThunk } from "../../redux/operations";
+import { addContact } from "../../redux/contactsOps";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -27,12 +27,13 @@ export const ContactForm = () => {
       name: values.name,
       number: values.number,
     };
-    dispatch(addContactThunk(newUser));
+    dispatch(addContact(newUser));
     actions.resetForm();
   };
 
   return (
     <div className={s.form_box}>
+      <p className={s.title}>ADD YOU CONTACTS</p>
       <Formik
         validationSchema={validationSchema}
         initialValues={initialValues}
