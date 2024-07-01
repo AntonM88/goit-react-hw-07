@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import s from "./ContactList.module.css";
 import { Contact } from "../Contact/Contact";
-import { deleteContact, selectContacts } from "../../redux/contactsSlice";
+import { selectContacts } from "../../redux/contactsSlice";
 import { selectNameFilter } from "../../redux/filtersSlice";
+import { deleteThunk } from "../../redux/operations";
 
 export const ContactList = () => {
   const contacts = useSelector(selectContacts);
@@ -18,7 +19,7 @@ export const ContactList = () => {
         <Contact
           item={contact}
           key={contact.id}
-          onDelete={() => dispatch(deleteContact(contact.id))}
+          onDelete={() => dispatch(deleteThunk(contact.id))}
         />
       ))}
     </ul>
